@@ -172,7 +172,7 @@ def draw_hud():
     glColor3f(0.4, 0.5, 0.6)
     vector_font.draw_text("MOUSE LEFT DRAG: ROTATE BLOCK", 20, window_height - 90, scale=7.0, spacing=1.2)
     vector_font.draw_text("MOUSE WHEEL: ZOOM IN / OUT", 20, window_height - 65, scale=7.0, spacing=1.2)
-    vector_font.draw_text("R: RESTART LEVEL   N: NEXT LEVEL   ESC: QUIT", 20, window_height - 40, scale=7.0, spacing=1.2)
+    vector_font.draw_text("R: RESTART LEVEL   P: PREV LEVEL   N: NEXT LEVEL   ESC: QUIT", 20, window_height - 40, scale=7.0, spacing=1.2)
     
     if game.level_complete_timer is not None:
         glDisable(GL_BLEND)
@@ -297,6 +297,9 @@ def key_callback(window, key, scancode, action, mods):
             glfw.set_window_should_close(window, True)
         elif key == glfw.KEY_R:
             game.load_level(game.level_idx)
+        elif key == glfw.KEY_P:
+            prev_lvl = (game.level_idx - 1) % 10
+            game.load_level(prev_lvl)
         elif key == glfw.KEY_N:
             next_lvl = (game.level_idx + 1) % 10
             game.load_level(next_lvl)
