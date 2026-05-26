@@ -70,6 +70,45 @@ class Game:
                         shape.append((x, 1, z))
             shape.append((1, 0, 1))
             shape.append((1, 2, 1))
+        elif idx == 3:
+            self.grid_size = 3
+            for x in range(3):
+                for y in range(3):
+                    for z in range(3):
+                        axes_count = 0
+                        if x == 1: axes_count += 1
+                        if y == 1: axes_count += 1
+                        if z == 1: axes_count += 1
+                        if axes_count >= 2:
+                            shape.append((x, y, z))
+        elif idx == 4:
+            self.grid_size = 3
+            for x in range(3):
+                for z in range(3):
+                    shape.append((x, 0, z))
+                    shape.append((x, 2, z))
+            shape.append((1, 1, 1))
+        elif idx == 5:
+            self.grid_size = 3
+            for x in range(3):
+                for y in range(3):
+                    for z in range(3):
+                        if not (x == 1 and y == 1 and z == 1):
+                            shape.append((x, y, z))
+        elif idx == 6:
+            self.grid_size = 3
+            for y in range(3):
+                shape.extend([(0, y, 0), (0, y, 2), (2, y, 0), (2, y, 2)])
+            shape.extend([(1, 1, 0), (1, 1, 2)])
+        elif idx == 7:
+            self.grid_size = 3
+            shape.extend([(0,0,0), (1,0,0), (2,0,0), (2,0,1), (2,0,2)])
+            shape.extend([(2,1,2), (1,1,2), (0,1,2), (0,1,1), (0,1,0)])
+            shape.extend([(0,2,0), (1,2,0), (2,2,0), (2,2,1), (2,2,2)])
+        elif idx == 8:
+            self.grid_size = 3
+            for y in range(3):
+                shape.extend([(0,y,0), (2,y,2), (2,y,0), (0,y,2), (1,y,1)])
         else:
             self.grid_size = 3
             for x in range(3):
@@ -205,10 +244,10 @@ class Game:
             if self.level_complete_timer <= 0.0:
                 self.level_complete_timer = None
                 next_lvl = (self.level_idx + 1)
-                if next_lvl < 4:
+                if next_lvl < 10:
                     self.load_level(next_lvl)
                 else:
-                    self.load_level(0)
+                    self.game_state = "VICTORY_SCREEN"
                     
         dead_cubes = []
         for cid, cube in self.cubes.items():

@@ -161,7 +161,11 @@ def draw_hud():
     glColor3f(1.0, 0.8, 0.0)
     vector_font.draw_text(f"CUBES: {active_count}", 20, 65, scale=10.0, spacing=1.2)
     
-    level_names = ["INTRO CLUSTER", "PYRAMID STACK", "THE 3D CROSS", "THE GIANT CORE"]
+    level_names = [
+        "INTRO CLUSTER", "PYRAMID STACK", "THE SPINNING RING", "THE 3D CROSS",
+        "THE HOURGLASS", "THE HOLLOW BOX", "THE TWIN PILLARS", "THE SPIRAL TOWER",
+        "THE X TOWER", "THE GIANT CORE"
+    ]
     glColor3f(0.6, 0.7, 0.8)
     vector_font.draw_text(level_names[game.level_idx], 20, 95, scale=8.0, spacing=1.2)
     
@@ -184,18 +188,78 @@ def draw_hud():
         pulse = math.sin(time.time() * 12.0) * 0.1 + 0.9
         glColor3f(pulse, pulse * 0.8, pulse * 0.2)
         
-        msg = "VICTORY!" if game.level_idx < 3 else "ALL LEVELS CLEAR!"
+        msg = "VICTORY!" if game.level_idx < 9 else "ALL LEVELS CLEAR!"
         char_w = 20.0 * 1.2
         text_w = len(msg) * char_w
         tx = (window_width - text_w) / 2
         vector_font.draw_text(msg, tx, window_height/2 - 30, scale=20.0, spacing=1.2)
         
-        sub = "LOADING NEXT STAGE..." if game.level_idx < 3 else "CONGRATULATIONS!"
+        sub = "LOADING NEXT STAGE..." if game.level_idx < 9 else "CONGRATULATIONS!"
         sub_char_w = 9.0 * 1.2
         sub_text_w = len(sub) * sub_char_w
         sx = (window_width - sub_text_w) / 2
         glColor3f(0.8, 0.8, 0.9)
         vector_font.draw_text(sub, sx, window_height/2 + 15, scale=9.0, spacing=1.2)
+
+    if game.game_state == "VICTORY_SCREEN":
+        glEnable(GL_BLEND)
+        glColor4f(0.05, 0.06, 0.12, 0.92)
+        glBegin(GL_QUADS)
+        glVertex2f(0, 0); glVertex2f(window_width, 0); glVertex2f(window_width, window_height); glVertex2f(0, window_height)
+        glEnd()
+        
+        pulse = math.sin(time.time() * 8.0) * 0.08 + 0.92
+        glColor3f(pulse, pulse * 0.8, pulse * 0.2)
+        
+        msg = "CONGRATULATIONS!"
+        char_w = 20.0 * 1.2
+        tx = (window_width - len(msg) * char_w) / 2
+        vector_font.draw_text(msg, tx, window_height/2 - 90, scale=20.0, spacing=1.2)
+        
+        sub = "YOU HAVE TAPPED AWAY ALL 10 STAGES"
+        sub_char_w = 8.0 * 1.2
+        sx = (window_width - len(sub) * sub_char_w) / 2
+        glColor3f(0.8, 0.85, 0.95)
+        vector_font.draw_text(sub, sx, window_height/2 - 40, scale=8.0, spacing=1.2)
+        
+        cx = window_width / 2
+        cy = window_height / 2
+        
+        # Button 1: RESTART
+        b1_hovered = (game.hovered_button == 1)
+        if b1_hovered:
+            glColor4f(0.0, 0.8, 1.0, 0.15)
+            glBegin(GL_QUADS)
+            glVertex2f(cx - 220, cy + 40); glVertex2f(cx - 20, cy + 40); glVertex2f(cx - 20, cy + 90); glVertex2f(cx - 220, cy + 90)
+            glEnd()
+            glColor3f(0.0, 0.8, 1.0)
+        else:
+            glColor3f(0.4, 0.5, 0.6)
+        glBegin(GL_LINE_LOOP)
+        glVertex2f(cx - 220, cy + 40); glVertex2f(cx - 20, cy + 40); glVertex2f(cx - 20, cy + 90); glVertex2f(cx - 220, cy + 90)
+        glEnd()
+        
+        b1_txt = "RESTART"
+        b1_tx = cx - 120 - (len(b1_txt) * 8.0 * 1.2) / 2
+        vector_font.draw_text(b1_txt, b1_tx, cy + 70, scale=8.0, spacing=1.2)
+        
+        # Button 2: QUIT
+        b2_hovered = (game.hovered_button == 2)
+        if b2_hovered:
+            glColor4f(1.0, 0.3, 0.3, 0.15)
+            glBegin(GL_QUADS)
+            glVertex2f(cx + 20, cy + 40); glVertex2f(cx + 220, cy + 40); glVertex2f(cx + 220, cy + 90); glVertex2f(cx + 20, cy + 90)
+            glEnd()
+            glColor3f(1.0, 0.3, 0.3)
+        else:
+            glColor3f(0.4, 0.5, 0.6)
+        glBegin(GL_LINE_LOOP)
+        glVertex2f(cx + 20, cy + 40); glVertex2f(cx + 220, cy + 40); glVertex2f(cx + 220, cy + 90); glVertex2f(cx + 20, cy + 90)
+        glEnd()
+        
+        b2_txt = "QUIT"
+        b2_tx = cx + 120 - (len(b2_txt) * 8.0 * 1.2) / 2
+        vector_font.draw_text(b2_txt, b2_tx, cy + 70, scale=8.0, spacing=1.2)
 
     glEnable(GL_DEPTH_TEST)
     glEnable(GL_LIGHTING)
@@ -210,9 +274,7 @@ def perform_picking(mx, my):
     glDisable(GL_LINE_SMOOTH)
     glClearColor(0.0, 0.0, 0.0, 0.0)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-    
     draw_scene(for_picking=True)
-    
     viewport_y = window_height - my
     pixel = glReadPixels(int(mx), int(viewport_y), 1, 1, GL_RGB, GL_UNSIGNED_BYTE)
     
@@ -221,7 +283,6 @@ def perform_picking(mx, my):
     glEnable(GL_LIGHTING)
     glEnable(GL_BLEND)
     glEnable(GL_LINE_SMOOTH)
-    
     if len(pixel) >= 3:
         r = pixel[0]
         g = pixel[1]
@@ -237,7 +298,7 @@ def key_callback(window, key, scancode, action, mods):
         elif key == glfw.KEY_R:
             game.load_level(game.level_idx)
         elif key == glfw.KEY_N:
-            next_lvl = (game.level_idx + 1) % 4
+            next_lvl = (game.level_idx + 1) % 10
             game.load_level(next_lvl)
 
 def scroll_callback(window, xoffset, yoffset):
@@ -294,10 +355,21 @@ def main():
         game.update(min(0.1, dt))
         mx, my = glfw.get_cursor_pos(window)
         
-        if game.assemble_t >= 1.0 and game.level_complete_timer is None:
-            game.hovered_cube_id = perform_picking(mx, my)
-        else:
+        if game.game_state == "VICTORY_SCREEN":
             game.hovered_cube_id = 0
+            cx = window_width / 2
+            cy = window_height / 2
+            game.hovered_button = 0
+            if cy + 40 <= my <= cy + 90:
+                if cx - 220 <= mx <= cx - 20:
+                    game.hovered_button = 1
+                elif cx + 20 <= mx <= cx + 220:
+                    game.hovered_button = 2
+        else:
+            if game.assemble_t >= 1.0 and game.level_complete_timer is None:
+                game.hovered_cube_id = perform_picking(mx, my)
+            else:
+                game.hovered_cube_id = 0
             
         left_state = glfw.get_mouse_button(window, glfw.MOUSE_BUTTON_LEFT)
         if left_state == glfw.PRESS:
@@ -307,21 +379,28 @@ def main():
                 last_mouse_y = my
                 is_dragging = False
             else:
-                dx = mx - last_mouse_x
-                dy = my - last_mouse_y
-                if abs(dx) > 1.0 or abs(dy) > 1.0:
-                    is_dragging = True
-                    game.target_rot_y += dx * 0.28
-                    game.target_rot_x += dy * 0.28
-                    game.target_rot_x = max(-80.0, min(80.0, game.target_rot_x))
-                    last_mouse_x = mx
-                    last_mouse_y = my
+                if game.game_state != "VICTORY_SCREEN":
+                    dx = mx - last_mouse_x
+                    dy = my - last_mouse_y
+                    if abs(dx) > 1.0 or abs(dy) > 1.0:
+                        is_dragging = True
+                        game.target_rot_y += dx * 0.28
+                        game.target_rot_x += dy * 0.28
+                        game.target_rot_x = max(-80.0, min(80.0, game.target_rot_x))
+                        last_mouse_x = mx
+                        last_mouse_y = my
         else:
             if mouse_pressed:
                 mouse_pressed = False
                 if not is_dragging:
-                    clicked_id = perform_picking(mx, my)
-                    game.attempt_tap(clicked_id)
+                    if game.game_state == "VICTORY_SCREEN":
+                        if game.hovered_button == 1:
+                            game.load_level(0)
+                        elif game.hovered_button == 2:
+                            glfw.set_window_should_close(window, True)
+                    else:
+                        clicked_id = perform_picking(mx, my)
+                        game.attempt_tap(clicked_id)
                 is_dragging = False
                 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
