@@ -1,6 +1,7 @@
 import random
 
 class Particle:
+    """Represents a simple visual particle for explosion effects."""
     def __init__(self, pos, vel, color):
         self.pos = list(pos)
         self.vel = list(vel)
