@@ -11,6 +11,7 @@ class Particle:
         self.size = random.uniform(3.0, 7.0)
 
     def update(self, dt):
+        """Updates particle position and lifetime over time dt."""
         self.pos[0] += self.vel[0] * dt
         self.pos[1] += self.vel[1] * dt
         self.pos[2] += self.vel[2] * dt
