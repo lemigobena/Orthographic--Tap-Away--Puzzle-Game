@@ -30,6 +30,7 @@ class Cube:
                 self.state = "IDLE"
 
     def get_offset(self, assemble_t):
+        """Calculates the current visual offset for animation."""
         if assemble_t < 1.0:
             s = (1.0 - assemble_t) ** 3
             return [self.assemble_offset[0] * s, self.assemble_offset[1] * s, self.assemble_offset[2] * s]
