@@ -18,6 +18,7 @@ class Cube:
         self.is_hovered = False
         
     def update(self, dt):
+        """Updates cube animation state."""
         if self.state == "FLYING":
             self.anim_t += dt * 1.5
             if self.anim_t > 1.0:
