@@ -4,6 +4,7 @@ import random
 from utils import set_normal_from_points
 
 class Cube:
+    """Represents a single tap-away cube in the puzzle grid."""
     def __init__(self, color_id, grid_pos, direction):
         self.color_id = color_id      # Unique ID for picking
         self.grid_pos = grid_pos      # (x, y, z) in grid coordinates
