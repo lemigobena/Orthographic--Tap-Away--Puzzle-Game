@@ -1,3 +1,6 @@
+"""
+Utility functions for the Orthographic Tap-Away Puzzle Game.
+"""
 from OpenGL.GL import *
 from typing import Tuple
 
