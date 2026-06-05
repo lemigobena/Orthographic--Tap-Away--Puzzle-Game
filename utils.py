@@ -14,3 +14,8 @@ def set_normal_from_points(p1: Tuple[float, float, float], p2: Tuple[float, floa
     length: float = (nx*nx + ny*ny + nz*nz) ** 0.5
     if length > 0.0001:
         glNormal3f(nx/length, ny/length, nz/length)
+
+
+def clamp(value: float, minimum: float, maximum: float) -> float:
+    """Clamp a value to a bounded range."""
+    return max(minimum, min(value, maximum))

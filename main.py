@@ -8,6 +8,7 @@ import time
 from game import Game
 import vector_font
 import cube
+from utils import clamp
 
 # Global instances
 game = Game()
@@ -389,7 +390,7 @@ def main():
                         is_dragging = True
                         game.target_rot_y += dx * 0.28
                         game.target_rot_x += dy * 0.28
-                        game.target_rot_x = max(-80.0, min(80.0, game.target_rot_x))
+                        game.target_rot_x = clamp(game.target_rot_x, -80.0, 80.0)
                         last_mouse_x = mx
                         last_mouse_y = my
         else:

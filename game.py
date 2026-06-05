@@ -9,6 +9,12 @@ class Game:
     Game manager that handles game loop state, loading level layout designs,
     checking block tap obstructions, and managing visual particles.
     """
+
+    DIRECTIONS = [
+        (1, 0, 0), (-1, 0, 0),
+        (0, 1, 0), (0, -1, 0),
+        (0, 0, 1), (0, 0, -1)
+    ]
     def __init__(self):
         self.level_idx = 0
         self.cubes = {}
@@ -132,15 +138,9 @@ class Game:
         placed_positions = set()
         cubes_to_add = []
         
-        directions = [
-            (1, 0, 0), (-1, 0, 0),
-            (0, 1, 0), (0, -1, 0),
-            (0, 0, 1), (0, 0, -1)
-        ]
-        
         for pos in shape_sorted:
             valid_dirs = []
-            for d in directions:
+            for d in self.DIRECTIONS:
                 x, y, z = pos
                 obstructed = False
                 while True:
@@ -171,7 +171,7 @@ class Game:
                 best_dirs = [item[0] for item in valid_dirs if item[1] == max_count]
                 direction = random.choice(best_dirs)
             else:
-                direction = random.choice(directions)
+                direction = random.choice(self.DIRECTIONS)
                 
             placed_positions.add(pos)
             cubes_to_add.append((pos, direction))
@@ -182,6 +182,10 @@ class Game:
             self.cubes[color_id_counter] = cube
             color_id_counter += 1
 
+    def is_position_occupied(self, pos):
+        """Returns True if a non-flying cube occupies the given grid position."""
+        return any(c.state != "FLYING" and c.grid_pos == pos for c in self.cubes.values())
+
     def check_obstruction(self, cube):
         d = cube.direction
         x, y, z = cube.grid_pos
@@ -191,9 +195,8 @@ class Game:
             z += d[2]
             if x < 0 or x >= self.grid_size or y < 0 or y >= self.grid_size or z < 0 or z >= self.grid_size:
                 return False
-            for c in self.cubes.values():
-                if c.state != "FLYING" and c.grid_pos == (x, y, z):
-                    return True
+            if self.is_position_occupied((x, y, z)):
+                return True
 
     def attempt_tap(self, color_id):
         if color_id not in self.cubes:

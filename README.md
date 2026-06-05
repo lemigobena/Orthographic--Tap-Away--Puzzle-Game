@@ -45,9 +45,14 @@ A 3D grid-based puzzle game implemented in Python using PyOpenGL and GLFW. The g
    ```bash
    ./run.sh
    ```
-   Or run the main entry script directly:
+   Or run the main entry script directly from the virtual environment:
    ```bash
+   source .venv/bin/activate
    python main.py
+   ```
+   If the virtual environment is not available, use the system Python interpreter:
+   ```bash
+   python3 main.py
    ```
 
 ---
