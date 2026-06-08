@@ -5,6 +5,10 @@ from cube import Cube
 from particle import Particle
 
 class Game:
+    """
+    Game manager that handles game loop state, loading level layout designs,
+    checking block tap obstructions, and managing visual particles.
+    """
     def __init__(self):
         self.level_idx = 0
         self.cubes = {}
