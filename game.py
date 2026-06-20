@@ -210,22 +210,26 @@ class Game:
         cx = cube.grid_pos[0] - self.grid_center[0]
         cy = cube.grid_pos[1] - self.grid_center[1]
         cz = cube.grid_pos[2] - self.grid_center[2]
-        color = (0.0, 0.8, 1.0)
-        for _ in range(18):
-            rx = cube.direction[0] * 3.0 + random.uniform(-1.5, 1.5)
-            ry = cube.direction[1] * 3.0 + random.uniform(-1.5, 1.5)
-            rz = cube.direction[2] * 3.0 + random.uniform(-1.5, 1.5)
-            self.particles.append(Particle((cx, cy, cz), (rx, ry, rz), color))
+        base_color = (0.0, 0.8, 1.0)
+        highlight_color = (1.0, 0.9, 0.2)
+        for _ in range(30):
+            rx = cube.direction[0] * 4.0 + random.uniform(-2.5, 2.5)
+            ry = cube.direction[1] * 4.0 + random.uniform(-2.5, 2.5)
+            rz = cube.direction[2] * 4.0 + random.uniform(-2.5, 2.5)
+            color = random.choice([base_color, base_color, highlight_color])
+            gravity = random.uniform(1.0, 3.5)
+            self.particles.append(Particle((cx, cy, cz), (rx, ry, rz), color, gravity=gravity))
 
     def spawn_victory_fireworks(self):
-        for _ in range(80):
-            rx = random.uniform(-4, 4)
-            ry = random.uniform(-4, 4)
-            rz = random.uniform(-4, 4)
+        for _ in range(150):
+            rx = random.uniform(-6, 6)
+            ry = random.uniform(-2, 8)
+            rz = random.uniform(-6, 6)
             color = random.choice([
-                (1.0, 0.2, 0.6), (0.0, 0.9, 1.0), (1.0, 0.8, 0.0), (0.2, 1.0, 0.4)
+                (1.0, 0.2, 0.6), (0.0, 0.9, 1.0), (1.0, 0.8, 0.0), (0.2, 1.0, 0.4), (0.9, 0.5, 1.0)
             ])
-            self.particles.append(Particle((0, 0, 0), (rx, ry, rz), color))
+            gravity = random.uniform(0.5, 2.0)
+            self.particles.append(Particle((0, 0, 0), (rx, ry, rz), color, gravity=gravity))
 
     def update(self, dt):
         if self.assemble_t < 1.0:
