@@ -70,3 +70,6 @@ A 3D grid-based puzzle game implemented in Python using PyOpenGL and GLFW. The g
 * **`vector_font.py`**: Renders custom vector characters and strings using pure OpenGL line primitives.
 * **`utils.py`**: Contains geometric utility operations (e.g. surface normal calculation).
 * **`run.sh`**: Bash script utility to easily execute the game using the `.venv` Python runtime.
+
+---
+*Updated on June 20th.*
