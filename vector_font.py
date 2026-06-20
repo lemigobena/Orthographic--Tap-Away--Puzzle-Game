@@ -65,3 +65,13 @@ def draw_text(text: str, x: float, y: float, scale: float = 1.0, spacing: float 
         c = c.upper()
         draw_char(c, curr_x, y, scale)
         curr_x += spacing * scale
+
+def draw_text_with_shadow(text: str, x: float, y: float, scale: float = 1.0, spacing: float = 1.2, shadow_offset: float = 2.0) -> None:
+    """Draws text with a simple drop shadow."""
+    # Draw shadow
+    current_color = glGetFloatv(GL_CURRENT_COLOR)
+    glColor4f(0.0, 0.0, 0.0, 0.8)
+    draw_text(text, x + shadow_offset, y + shadow_offset, scale, spacing)
+    # Restore color and draw text
+    glColor4fv(current_color)
+    draw_text(text, x, y, scale, spacing)

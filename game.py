@@ -49,6 +49,9 @@ class Game:
         self.target_rot_x = 25.0
         self.target_rot_y = -45.0
         self.target_zoom = 1.0
+        self.rot_y += 180.0
+        self.rot_x += 45.0
+        self.zoom = 0.5
         
         shape = []
         if idx == 0:
@@ -237,9 +240,9 @@ class Game:
             if self.assemble_t > 1.0:
                 self.assemble_t = 1.0
                 
-        self.rot_x += (self.target_rot_x - self.rot_x) * 10.0 * dt
-        self.rot_y += (self.target_rot_y - self.rot_y) * 10.0 * dt
-        self.zoom += (self.target_zoom - self.zoom) * 10.0 * dt
+        self.rot_x += (self.target_rot_x - self.rot_x) * 8.0 * dt
+        self.rot_y += (self.target_rot_y - self.rot_y) * 8.0 * dt
+        self.zoom += (self.target_zoom - self.zoom) * 12.0 * dt
         
         active_count = sum(1 for c in self.cubes.values() if c.state != "FLYING")
         if active_count == 0 and self.level_complete_timer is None:

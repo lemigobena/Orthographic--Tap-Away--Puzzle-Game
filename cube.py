@@ -1,6 +1,7 @@
 from OpenGL.GL import *
 import math
 import random
+import time
 from utils import set_normal_from_points
 
 class Cube:
@@ -50,7 +51,8 @@ def draw_cube_faces(cube, for_picking):
         glColor3ub(r, g, b)
     else:
         if cube.is_hovered:
-            glColor4f(0.25, 0.38, 0.55, 0.8)
+            pulse = (math.sin(time.time() * 8.0) * 0.5 + 0.5) * 0.15
+            glColor4f(0.25 + pulse, 0.38 + pulse, 0.55 + pulse, 0.85)
         else:
             glColor4f(0.14, 0.20, 0.30, 0.65)
     s = 0.45
@@ -71,7 +73,8 @@ def draw_cube_faces(cube, for_picking):
 
 def draw_cube_wireframe(cube, is_hovered):
     if is_hovered:
-        glColor4f(1.0, 0.8, 0.2, 1.0)
+        pulse = math.sin(time.time() * 12.0) * 0.2 + 0.8
+        glColor4f(1.0, 0.8 * pulse, 0.2 * pulse, 1.0)
     else:
         glColor4f(0.0, 0.8, 1.0, 0.85)
     s = 0.455
@@ -92,7 +95,8 @@ def draw_cube_wireframe(cube, is_hovered):
 
 def draw_standard_arrow(is_hovered):
     if is_hovered:
-        glColor4f(1.0, 0.9, 0.3, 1.0)
+        pulse = math.sin(time.time() * 10.0) * 0.2 + 0.8
+        glColor4f(1.0, 0.9 * pulse, 0.3 * pulse, 1.0)
     else:
         glColor4f(1.0, 0.5, 0.0, 1.0)
     sh = 0.045

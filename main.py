@@ -155,11 +155,11 @@ def draw_hud():
     glEnable(GL_LINE_SMOOTH)
     
     glColor3f(0.0, 0.8, 1.0)
-    vector_font.draw_text(f"LEVEL {game.level_idx + 1}", 20, 35, scale=12.0, spacing=1.2)
+    vector_font.draw_text_with_shadow(f"LEVEL {game.level_idx + 1}", 20, 35, scale=12.0, spacing=1.2)
     
     active_count = sum(1 for c in game.cubes.values() if c.state != "FLYING")
     glColor3f(1.0, 0.8, 0.0)
-    vector_font.draw_text(f"CUBES: {active_count}", 20, 65, scale=10.0, spacing=1.2)
+    vector_font.draw_text_with_shadow(f"CUBES: {active_count}", 20, 65, scale=10.0, spacing=1.2)
     
     level_names = [
         "INTRO CLUSTER", "PYRAMID STACK", "THE SPINNING RING", "THE 3D CROSS",
@@ -167,7 +167,7 @@ def draw_hud():
         "THE X TOWER", "THE GIANT CORE"
     ]
     glColor3f(0.6, 0.7, 0.8)
-    vector_font.draw_text(level_names[game.level_idx], 20, 95, scale=8.0, spacing=1.2)
+    vector_font.draw_text_with_shadow(level_names[game.level_idx], 20, 95, scale=8.0, spacing=1.2)
     
     glColor3f(0.4, 0.5, 0.6)
     vector_font.draw_text("MOUSE LEFT DRAG: ROTATE BLOCK", 20, window_height - 90, scale=7.0, spacing=1.2)
@@ -192,7 +192,7 @@ def draw_hud():
         char_w = 20.0 * 1.2
         text_w = len(msg) * char_w
         tx = (window_width - text_w) / 2
-        vector_font.draw_text(msg, tx, window_height/2 - 30, scale=20.0, spacing=1.2)
+        vector_font.draw_text_with_shadow(msg, tx, window_height/2 - 30, scale=20.0, spacing=1.2, shadow_offset=3.0)
         
         sub = "LOADING NEXT STAGE..." if game.level_idx < 9 else "CONGRATULATIONS!"
         sub_char_w = 9.0 * 1.2
@@ -214,7 +214,7 @@ def draw_hud():
         msg = "CONGRATULATIONS!"
         char_w = 20.0 * 1.2
         tx = (window_width - len(msg) * char_w) / 2
-        vector_font.draw_text(msg, tx, window_height/2 - 90, scale=20.0, spacing=1.2)
+        vector_font.draw_text_with_shadow(msg, tx, window_height/2 - 90, scale=20.0, spacing=1.2, shadow_offset=3.0)
         
         sub = "YOU HAVE TAPPED AWAY ALL 10 STAGES"
         sub_char_w = 8.0 * 1.2
