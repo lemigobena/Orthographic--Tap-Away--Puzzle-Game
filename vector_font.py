@@ -1,6 +1,10 @@
+"""
+A simple vector-based font system for rendering text in PyOpenGL.
+"""
 from OpenGL.GL import *
+from typing import Dict, List, Tuple
 
-FONT = {
+FONT: Dict[str, List[Tuple[Tuple[float, float], Tuple[float, float]]]] = {
     '0': [((0,0), (1,0)), ((1,0), (1,1.5)), ((1,1.5), (0,1.5)), ((0,1.5), (0,0))],
     '1': [((0.5,0), (0.5,1.5)), ((0.2,1.2), (0.5,1.5)), ((0.2,0), (0.8,0))],
     '2': [((0,1.5), (1,1.5)), ((1,1.5), (1,0.75)), ((1,0.75), (0,0.75)), ((0,0.75), (0,0)), ((0,0), (1,0))],
@@ -44,7 +48,8 @@ FONT = {
     '+': [((0.2,0.75), (0.8,0.75)), ((0.5,0.45), (0.5,1.05))]
 }
 
-def draw_char(char, x, y, scale):
+def draw_char(char: str, x: float, y: float, scale: float) -> None:
+    """Draws a single character using line segments."""
     if char not in FONT:
         return
     glBegin(GL_LINES)
@@ -53,7 +58,8 @@ def draw_char(char, x, y, scale):
         glVertex2f(x + seg[1][0] * scale, y - seg[1][1] * scale)
     glEnd()
 
-def draw_text(text, x, y, scale=1.0, spacing=1.2):
+def draw_text(text: str, x: float, y: float, scale: float = 1.0, spacing: float = 1.2) -> None:
+    """Draws a string of text."""
     curr_x = x
     for c in text:
         c = c.upper()

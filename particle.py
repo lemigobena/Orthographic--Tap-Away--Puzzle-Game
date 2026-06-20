@@ -1,16 +1,17 @@
 import random
+from typing import Tuple, List
 
 class Particle:
     """Represents a simple visual particle for explosion effects."""
-    def __init__(self, pos, vel, color):
-        self.pos = list(pos)
-        self.vel = list(vel)
-        self.color = color
-        self.life = 1.0
-        self.decay = random.uniform(1.0, 2.5)
-        self.size = random.uniform(3.0, 7.0)
+    def __init__(self, pos: Tuple[float, float, float], vel: Tuple[float, float, float], color: Tuple[float, float, float]):
+        self.pos: List[float] = list(pos)
+        self.vel: List[float] = list(vel)
+        self.color: Tuple[float, float, float] = color
+        self.life: float = 1.0
+        self.decay: float = random.uniform(1.0, 2.5)
+        self.size: float = random.uniform(3.0, 7.0)
 
-    def update(self, dt):
+    def update(self, dt: float) -> None:
         """Updates particle position and lifetime over time dt."""
         self.pos[0] += self.vel[0] * dt
         self.pos[1] += self.vel[1] * dt
